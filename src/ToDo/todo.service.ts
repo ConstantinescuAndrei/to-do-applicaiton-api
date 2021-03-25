@@ -44,15 +44,9 @@ export class ToDoService {
             })
 
             await newTodo.save();
-
+            const todos = await this.todoModel.find({ username }).exec();
             const result: Object = {
-                todo: { 
-                    title, 
-                    content, 
-                    date, 
-                    username,
-                    status: 'pending'
-                },
+                todos,
                 added: true
             };
 
@@ -63,11 +57,25 @@ export class ToDoService {
         id: string,
         username: string
     ) : Promise<Object> {
-        await this.todoModel.findOneAndUpdate({ _id: id }, { status: 'complete' })
+        await this.todoModel.findOneAndUpdate({ _id: id }, { status: 'complete' });
         const response = await this.getTodos(username);
         const result: Object = {
             todos: response['todos']
         }
+        return result;
+    }
+
+    async delete(
+        id: string,
+        username: string
+    ) : Promise<Object> {
+        const response = await this.todoModel.findOneAndRemove({ _id: id }).exec();
+        const todos = await this.todoModel.find({ username }).exec();
+        const result: Object = {
+            todos,
+            response
+        }
+
         return result;
     }
 }

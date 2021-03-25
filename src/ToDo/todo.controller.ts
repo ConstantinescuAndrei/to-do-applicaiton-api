@@ -18,8 +18,8 @@ export class ToDoController {
         @Headers() headers,
         @Body('title') title: string,
         @Body('content') content: string, 
+        @Body('username') username: string,
     ) : Promise<Object> {
-        const username = headers.username;
         const result = await this.todoService.createTodo(title, content, username);
         return result;
     }
@@ -29,8 +29,16 @@ export class ToDoController {
         @Query('id') id: string, 
         @Query('username') username: string,
     ) : Promise<Object> {
-        console.log("Here")
         const response = await this.todoService.completeTodo(id, username);
+        return response;
+    }
+
+    @Get('delete')
+    async deleteTodo(
+        @Query('id') id: string,
+        @Query('username') username: string
+    ) : Promise<Object> {
+        const response = await this.todoService.delete(id, username);
         return response;
     }
 }
