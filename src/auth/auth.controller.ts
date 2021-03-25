@@ -10,8 +10,6 @@ export class AuthController {
         @Body('username') username: string,
         @Body('password') password: string
     ) : Promise<Object> {
-        console.log(username);
-        console.log(password);
         const result = await this.authService.login(username, password);
 
         return result;

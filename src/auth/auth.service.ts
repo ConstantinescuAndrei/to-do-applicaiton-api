@@ -13,9 +13,6 @@ export class AuthService {
 
     async login(username: string, password: string) : Promise<Object> {
         const user = await this.userModel.findOne({ username }).exec();
-        console.log(user);
-        console.log(username)
-        console.log(password);
         if(user) {
             const passwordMatch = await bcrypt.compare(password, user['password']);
             console.log(passwordMatch);
